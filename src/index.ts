@@ -119,20 +119,6 @@ export default function smsBuilder(configs: SmsConfig) {
 
 // t.reportMessage("876240022");
 
-//   async ReportArchived(
-//     fromDate: number | null = null,
-//     toDate: number | null = null,
-//     pageSize: number = 10,
-//     pageNumber: number = 1
-//   ) {
-//     return this.request("GET", "/v1/send/archive/", {
-//       fromDate,
-//       toDate,
-//       pageSize,
-//       pageNumber,
-//     });
-//   }
-
 //   async ReportLatestReceived(count: number = 100) {
 //     return this.request("GET", "/v1/receive/latest", {
 //       count,
