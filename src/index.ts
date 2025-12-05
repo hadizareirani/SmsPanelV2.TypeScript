@@ -5,6 +5,7 @@ import {
   createSendLikeToLike,
   createSendVerifyCode,
 } from "./send";
+import { createReportMessage } from "./report";
 import { SmsConfig } from "./utils";
 
 export default function smsBuilder(configs: SmsConfig) {
@@ -94,19 +95,29 @@ export default function smsBuilder(configs: SmsConfig) {
      * @returns Promise with messageId and cost
      */
     sendByURL: createSendByURL(configs),
+
+    /**
+     * Gets the delivery status and details of a sent message
+     *
+     * @param messageId - The message ID to get report for
+     * @returns Promise with message details including delivery state, cost, and timestamps
+     *
+     * @example
+     * ```typescript
+     * const report = await reportMessage("876240022");
+     * // Returns: { messageId, mobile, messageText, deliveryState, cost, ... }
+     * ```
+     */
+    reportMessage: createReportMessage({ apiKey: configs.apiKey }),
   };
 }
 
-// const t = smsBuilder({
-//   apiKey: "your_api_key",
-//   lineNumber: 30001234567890,
-// })
+const t = smsBuilder({
+  apiKey: "your_api_key",
+  lineNumber: 30001234567890,
+});
 
-// t.sendBulk()
-
-//   async ReportMessage(MessageId: number) {
-//     return this.request("GET", `/v1/send/${MessageId}`);
-//   }
+t.reportMessage("876240022");
 
 //   async ReportPack(PackId: string) {
 //     return this.request("GET", `/v1/send/pack/${PackId}`);
