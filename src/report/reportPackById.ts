@@ -22,7 +22,7 @@ export const createReportPackById = ({ apiKey }: Pick<SmsConfig, "apiKey">) => {
     packId: PackId
   ): Promise<ResponseModel<ReportPackByIdResponse[]>> {
     return request<ReportPackByIdResponse[]>({
-      input: `/v1/send/${packId}`,
+      input: `/v1/send/pack/${packId}`,
       init: {
         method: "GET",
       },

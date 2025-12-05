@@ -20,12 +20,12 @@ export const createReportDailyPack = ({
     pageSize?: number
   ): Promise<ResponseModel<ReportDailyPackResponse[]>> {
     const params = new URLSearchParams({
-      pageNumber: String(pageNumber ?? 1),
-      pageSize: String(pageSize ?? 100),
+      ...(pageNumber && { pageNumber: pageNumber.toString() }),
+      ...(pageSize && { pageSize: pageSize.toString() }),
     });
 
     return request<ReportDailyPackResponse[]>({
-      input: `/v1/send?${params.toString()}`,
+      input: `/v1/send/pack?${params.toString()}`,
       init: {
         method: "GET",
       },

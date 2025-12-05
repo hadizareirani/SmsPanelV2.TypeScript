@@ -3,7 +3,7 @@ import { PackId, request, ResponseModel, SmsConfig } from "../utils";
 /**
  * Response from the send by URL API
  */
-export interface ReportTodayResponse {
+export interface ReportTodayLiveResponse {
   messageId: number;
   mobile: number;
   messageText: string;
@@ -17,18 +17,20 @@ export interface ReportTodayResponse {
 /**
  * Creates a SendByURL function with pre-configured API credentials
  */
-export const createReportToday = ({ apiKey }: Pick<SmsConfig, "apiKey">) => {
-  return async function reportToday(
+export const createReportTodayLive = ({
+  apiKey,
+}: Pick<SmsConfig, "apiKey">) => {
+  return async function reportTodayLive(
     pageNumber?: number,
     pageSize?: number
-  ): Promise<ResponseModel<ReportTodayResponse[]>> {
+  ): Promise<ResponseModel<ReportTodayLiveResponse[]>> {
     const params = new URLSearchParams({
-      pageNumber: String(pageNumber ?? 1),
-      pageSize: String(pageSize ?? 100),
+      ...(pageNumber && { pageNumber: pageNumber.toString() }),
+      ...(pageSize && { pageSize: pageSize.toString() }),
     });
 
-    return request<ReportTodayResponse[]>({
-      input: `/v1/send?${params.toString()}`,
+    return request<ReportTodayLiveResponse[]>({
+      input: `/v1/send/live?${params.toString()}`,
       init: {
         method: "GET",
       },
