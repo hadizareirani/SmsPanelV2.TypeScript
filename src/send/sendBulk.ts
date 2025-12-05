@@ -22,8 +22,21 @@ export interface SendBulkResponse {
 
 /**
  * Creates a SendBulk function with pre-configured API credentials
+ *
+ * @param apiKey - SMS.ir API key for authentication
+ * @param lineNumber - Default line number for sending messages
+ * @returns A function to send bulk SMS messages
  */
 export const createSendBulk = ({ apiKey, lineNumber }: SmsConfig) => {
+  /**
+   * Sends a bulk SMS message to multiple recipients
+   *
+   * @param messageText - The text message to send
+   * @param mobiles - Array of mobile numbers (e.g., ["09123456789"])
+   * @param sendDateTime - Optional Unix timestamp for scheduled sending
+   * @param customLineNumber - Optional custom line number to override the default
+   * @returns Promise with packId, messageIds, and cost
+   */
   return async function sendBulk(
     messageText: string,
     mobiles: string[],

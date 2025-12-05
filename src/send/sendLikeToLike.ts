@@ -21,8 +21,23 @@ export interface SendLikeToLikeResponse {
 
 /**
  * Creates a SendLikeToLike function with pre-configured API credentials
+ *
+ * @param apiKey - SMS.ir API key for authentication
+ * @param lineNumber - Default line number for sending messages
+ * @returns A function to send paired SMS messages
  */
 export const createSendLikeToLike = ({ apiKey, lineNumber }: SmsConfig) => {
+  /**
+   * Sends multiple different messages to multiple recipients in pairs (1-to-1 mapping)
+   *
+   * First message goes to first mobile, second to second mobile, etc.
+   *
+   * @param messageTexts - Array of messages (must match length of mobiles array)
+   * @param mobiles - Array of mobile numbers (must match length of messageTexts array)
+   * @param sendDateTime - Optional Unix timestamp for scheduled sending
+   * @param customLineNumber - Optional custom line number to override the default
+   * @returns Promise with packId, messageIds, and cost
+   */
   return async function sendLikeToLike(
     messageTexts: string[],
     mobiles: string[],

@@ -5,9 +5,39 @@ import {
   createSendLikeToLike,
   createSendVerifyCode,
 } from "./send";
-import { createReportMessage } from "./report";
+import {
+  createReportMessage,
+  createReportDailyPack,
+  createReportPackById,
+  createReportTodayLive,
+  createReportLatestReceive,
+  createReportArchive,
+  createReportReceiveLive,
+  createReportReceiveArchive,
+} from "./report";
+import { createGetCredit, createGetLineNumbers } from "./settings";
 import { SmsConfig } from "./utils";
 
+/**
+ * Creates an SMS client with all available SMS.ir API methods
+ *
+ * @param configs - Configuration object containing apiKey and lineNumber
+ * @returns Object with all SMS operations (send, report, settings)
+ *
+ * @example
+ * ```typescript
+ * const sms = smsBuilder({
+ *   apiKey: "your-api-key",
+ *   lineNumber: 30007732000000
+ * });
+ *
+ * // Send a bulk SMS
+ * await sms.sendBulk("Hello!", ["09123456789"]);
+ *
+ * // Get account credit
+ * const credit = await sms.getCredit();
+ * ```
+ */
 export default function smsBuilder(configs: SmsConfig) {
   return {
     /**
@@ -15,9 +45,9 @@ export default function smsBuilder(configs: SmsConfig) {
      *
      * @param messageText - The text message to send
      * @param mobiles - Array of mobile numbers (e.g., ["09123456789"])
-     * @param sendDateTime - Optional timestamp for scheduled sending (Unix timestamp in milliseconds)
+     * @param sendDateTime - Optional Unix timestamp for scheduled sending
      * @param customLineNumber - Optional custom line number to override the default
-     * @returns Promise resolving to the API response with packId, messageIds, and cost
+     * @returns Promise with packId, messageIds, and cost
      *
      * @example
      * ```typescript
@@ -37,7 +67,7 @@ export default function smsBuilder(configs: SmsConfig) {
      *
      * @param messageTexts - Array of messages (must match length of mobiles array)
      * @param mobiles - Array of mobile numbers (must match length of messageTexts array)
-     * @param sendDateTime - Optional timestamp for scheduled sending
+     * @param sendDateTime - Optional Unix timestamp for scheduled sending
      * @param customLineNumber - Optional custom line number
      * @returns Promise with packId, messageIds, and cost
      *
@@ -54,12 +84,12 @@ export default function smsBuilder(configs: SmsConfig) {
     /**
      * Deletes a scheduled SMS pack and returns credits to your account
      *
-     * @param packId - The pack identifier object containing the packId to delete
+     * @param packId - The pack identifier to delete
      * @returns Promise with returnedCreditCount and smsCount
      *
      * @example
      * ```typescript
-     * await deleteScheduled({ packId: "2b99e72c-9bf8-..." });
+     * await deleteScheduled("2b99e72c-9bf8-...");
      * ```
      */
     deleteScheduled: createDeleteScheduled({ apiKey: configs.apiKey }),
@@ -105,19 +135,91 @@ export default function smsBuilder(configs: SmsConfig) {
      * @example
      * ```typescript
      * const report = await reportMessage("876240022");
-     * // Returns: { messageId, mobile, messageText, deliveryState, cost, ... }
      * ```
      */
     reportMessage: createReportMessage({ apiKey: configs.apiKey }),
+
+    /**
+     * Retrieves daily SMS pack reports with pagination
+     *
+     * @param pageNumber - Page number for pagination
+     * @param pageSize - Number of items per page
+     * @returns Promise with array of daily pack reports
+     */
+    reportDailyPack: createReportDailyPack({ apiKey: configs.apiKey }),
+
+    /**
+     * Retrieves all messages in a specific SMS pack
+     *
+     * @param packId - The pack identifier to retrieve messages for
+     * @returns Promise with array of messages in the pack
+     */
+    reportPackById: createReportPackById({ apiKey: configs.apiKey }),
+
+    /**
+     * Retrieves today's sent SMS messages with live status
+     *
+     * @param pageNumber - Page number for pagination
+     * @param pageSize - Number of items per page
+     * @returns Promise with array of today's sent messages
+     */
+    reportTodayLive: createReportTodayLive({ apiKey: configs.apiKey }),
+
+    /**
+     * Retrieves the latest received SMS messages
+     *
+     * @param count - Number of messages to retrieve
+     * @returns Promise with array of latest received messages
+     */
+    reportLatestReceive: createReportLatestReceive({ apiKey: configs.apiKey }),
+
+    /**
+     * Retrieves archived SMS messages within a date range
+     *
+     * @param fromDate - Start date (Unix timestamp)
+     * @param toDate - End date (Unix timestamp)
+     * @param pageNumber - Page number for pagination
+     * @param pageSize - Number of items per page
+     * @returns Promise with array of archived message reports
+     */
+    reportArchive: createReportArchive({ apiKey: configs.apiKey }),
+
+    /**
+     * Retrieves live received SMS messages with pagination and sorting
+     *
+     * @param pageNumber - Page number for pagination
+     * @param pageSize - Number of items per page
+     * @param sortByNewest - Sort by newest messages first
+     * @returns Promise with array of live received messages
+     */
+    reportReceiveLive: createReportReceiveLive({ apiKey: configs.apiKey }),
+
+    /**
+     * Retrieves archived received SMS messages within a date range
+     *
+     * @param fromDate - Start date (Unix timestamp)
+     * @param toDate - End date (Unix timestamp)
+     * @param pageNumber - Page number for pagination
+     * @param pageSize - Number of items per page
+     * @returns Promise with array of archived received messages
+     */
+    reportReceiveArchive: createReportReceiveArchive({
+      apiKey: configs.apiKey,
+    }),
+
+    /**
+     * Retrieves the current account credit balance
+     *
+     * @returns Promise with the credit amount
+     */
+    getCredit: createGetCredit({ apiKey: configs.apiKey }),
+
+    /**
+     * Retrieves all available line numbers for the account
+     *
+     * @returns Promise with array of line numbers
+     */
+    getLineNumbers: createGetLineNumbers({ apiKey: configs.apiKey }),
   };
 }
-
-//   async getCredit() {
-//     return this.request("GET", "/v1/credit");
-//   }
-
-//   async getLineNumbers() {
-//     return this.request("GET", "/v1/line");
-//   }
-// }
 

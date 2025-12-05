@@ -16,8 +16,17 @@ export interface ReportMessageResponse {
 
 /**
  * Creates a ReportMessage function with pre-configured API credentials
+ *
+ * @param apiKey - SMS.ir API key for authentication
+ * @returns A function to retrieve message delivery status and details
  */
 export const createReportMessage = ({ apiKey }: Pick<SmsConfig, "apiKey">) => {
+  /**
+   * Gets the delivery status and details of a sent message
+   *
+   * @param messageId - The message ID to get report for
+   * @returns Promise with message details including delivery state, cost, and timestamps
+   */
   return async function reportMessage(
     messageId: string
   ): Promise<ResponseModel<ReportMessageResponse>> {

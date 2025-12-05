@@ -1,7 +1,7 @@
 import { request, ResponseModel, SmsConfig } from "../utils";
 
 /**
- * Response from the send by URL API
+ * Response from the today live report API
  */
 export interface ReportTodayLiveResponse {
   messageId: number;
@@ -15,22 +15,34 @@ export interface ReportTodayLiveResponse {
 }
 
 /**
- * Creates a SendByURL function with pre-configured API credentials
+ * Creates a ReportTodayLive function with pre-configured API credentials
+ *
+ * @param apiKey - SMS.ir API key for authentication
+ * @returns A function to retrieve today's live message reports
  */
 export const createReportTodayLive = ({
   apiKey,
 }: Pick<SmsConfig, "apiKey">) => {
+  /**
+   * Retrieves today's sent SMS messages with live status
+   *
+   * @param pageNumber - Page number for pagination
+   * @param pageSize - Number of items per page
+   * @returns Promise with array of today's sent messages
+   */
   return async function reportTodayLive(
     pageNumber?: number,
     pageSize?: number
   ): Promise<ResponseModel<ReportTodayLiveResponse[]>> {
-    const params = new URLSearchParams({
-      ...(pageNumber && { pageNumber: pageNumber.toString() }),
-      ...(pageSize && { pageSize: pageSize.toString() }),
-    });
+    const params = new URLSearchParams();
+    if (pageNumber) params.append("pageNumber", pageNumber.toString());
+    if (pageSize) params.append("pageSize", pageSize.toString());
+
+    const queryString = params.toString();
+    const url = queryString ? `/v1/send/live?${queryString}` : `/v1/send/live`;
 
     return request<ReportTodayLiveResponse[]>({
-      input: `/v1/send/live?${params.toString()}`,
+      input: url,
       init: {
         method: "GET",
       },

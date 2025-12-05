@@ -1,7 +1,7 @@
 import { PackId, request, ResponseModel, SmsConfig } from "../utils";
 
 /**
- * Response from the send by URL API
+ * Response from the pack report API
  */
 export interface ReportPackByIdResponse {
   messageId: number;
@@ -15,9 +15,18 @@ export interface ReportPackByIdResponse {
 }
 
 /**
- * Creates a SendByURL function with pre-configured API credentials
+ * Creates a ReportPackById function with pre-configured API credentials
+ *
+ * @param apiKey - SMS.ir API key for authentication
+ * @returns A function to retrieve messages from a specific pack
  */
 export const createReportPackById = ({ apiKey }: Pick<SmsConfig, "apiKey">) => {
+  /**
+   * Retrieves all messages in a specific SMS pack
+   *
+   * @param packId - The pack identifier to retrieve messages for
+   * @returns Promise with array of messages in the pack
+   */
   return async function reportPackById(
     packId: PackId
   ): Promise<ResponseModel<ReportPackByIdResponse[]>> {
