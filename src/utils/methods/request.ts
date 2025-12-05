@@ -40,7 +40,7 @@ export async function request<TBody, TResult>(
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: body ? JSON.stringify(body) : undefined,
+    ...(body && { body: JSON.stringify(body) }),
   });
 
   if (!response.ok) {

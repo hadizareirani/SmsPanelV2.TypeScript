@@ -1,56 +1,19 @@
-// import { request } from "./utils/request";
-
-import { createSendBulk } from "./send";
+import {
+  createDeleteScheduled,
+  createSendBulk,
+  createSendLikeToLike,
+  createSendVerifyCode,
+} from "./send";
 import { SmsConfig } from "./utils";
 
 export default function smsBuilder(configs: SmsConfig) {
   return {
     sendBulk: createSendBulk(configs),
+    sendLikeToLike: createSendLikeToLike(configs),
+    deleteScheduled: createDeleteScheduled({ apiKey: configs.apiKey }),
+    sendVerifyCode: createSendVerifyCode({ apiKey: configs.apiKey }),
   };
 }
-
-const t = smsBuilder({ apiKey: "your-api-key", lineNumber: 30005006007008 });
-t.sendBulk();
-// export class Smsir {
-//   private apiKey: string;
-//   private lineNumber: number;
-
-//   constructor(apikey: string, linenumber: number) {
-//     this.apiKey = apikey;
-//     this.lineNumber = linenumber;
-//   }
-
-//   async SendBulk(
-//     MessageText: string,
-//     Mobiles: string[],
-//     SendDateTime: number | null = null,
-//     lineNumber: number | null = null
-//   ) {
-//     return this.request("POST", "/v1/send/bulk", {
-//       lineNumber: lineNumber ?? this.lineNumber,
-//       MessageText,
-//       Mobiles,
-//       SendDateTime,
-//     });
-//   }
-
-//   async SendLikeToLike(
-//     MessageTexts: string[],
-//     Mobiles: string[],
-//     SendDateTime: number | null = null,
-//     lineNumber: number | null = null
-//   ) {
-//     return this.request("POST", "/v1/send/liketolike", {
-//       lineNumber: lineNumber ?? this.lineNumber,
-//       MessageTexts,
-//       Mobiles,
-//       SendDateTime,
-//     });
-//   }
-
-//   async deleteScheduled(PackId: string) {
-//     return this.request("DELETE", `/v1/send/scheduled/${PackId}`);
-//   }
 
 //   async SendVerifyCode(
 //     Mobile: string,
