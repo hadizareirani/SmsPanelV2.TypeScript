@@ -1,34 +1,47 @@
-import axios from 'axios';
-const ENDPOINT = 'https://api.sms.ir';
-let SMSIR_API_KEY = '';
-let mainLineNumber!: number;
+const ENDPOINT = "https://api.sms.ir";
 
 export class Smsir {
+  private apiKey: string;
+  private lineNumber: number;
+
   constructor(apikey: string, linenumber: number) {
-    SMSIR_API_KEY = apikey;
-    mainLineNumber = linenumber;
+    this.apiKey = apikey;
+    this.lineNumber = linenumber;
+  }
+
+  private async request<T>(
+    method: string,
+    url: string,
+    body?: any
+  ): Promise<T> {
+    const response = await fetch(`${ENDPOINT}${url}`, {
+      method,
+      headers: {
+        "X-API-KEY": this.apiKey,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json() as Promise<T>;
   }
 
   async SendBulk(
     MessageText: string,
     Mobiles: string[],
     SendDateTime: number | null = null,
-    lineNumber: number | null = null,
+    lineNumber: number | null = null
   ) {
-    return axios({
-      method: 'POST',
-      url: `${ENDPOINT}/v1/send/bulk`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        lineNumber: lineNumber ? lineNumber : mainLineNumber,
-        MessageText,
-        Mobiles,
-        SendDateTime,
-      },
+    return this.request("POST", "/v1/send/bulk", {
+      lineNumber: lineNumber ?? this.lineNumber,
+      MessageText,
+      Mobiles,
+      SendDateTime,
     });
   }
 
@@ -36,90 +49,44 @@ export class Smsir {
     MessageTexts: string[],
     Mobiles: string[],
     SendDateTime: number | null = null,
-    lineNumber: number | null = null,
+    lineNumber: number | null = null
   ) {
-    return axios({
-      method: 'POST',
-      url: `${ENDPOINT}/v1/send/liketolike`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        lineNumber: lineNumber ? lineNumber : mainLineNumber,
-        MessageTexts,
-        Mobiles,
-        SendDateTime,
-      },
-    });
-  }
-  async deleteScheduled(PackId: string) {
-    return axios({
-      method: 'DELETE',
-      url: `${ENDPOINT}/v1/send/scheduled/${PackId}`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
+    return this.request("POST", "/v1/send/liketolike", {
+      lineNumber: lineNumber ?? this.lineNumber,
+      MessageTexts,
+      Mobiles,
+      SendDateTime,
     });
   }
 
-  async SendVerifyCode(Mobile: string, TemplateId: number, Parameters: { name: string; value: string }[]) {
-    return axios({
-      method: 'POST',
-      url: `${ENDPOINT}/v1/send/verify/`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        Mobile,
-        TemplateId,
-        Parameters,
-      },
+  async deleteScheduled(PackId: string) {
+    return this.request("DELETE", `/v1/send/scheduled/${PackId}`);
+  }
+
+  async SendVerifyCode(
+    Mobile: string,
+    TemplateId: number,
+    Parameters: { name: string; value: string }[]
+  ) {
+    return this.request("POST", "/v1/send/verify/", {
+      Mobile,
+      TemplateId,
+      Parameters,
     });
   }
 
   async ReportMessage(MessageId: number) {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/send/${MessageId}`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    return this.request("GET", `/v1/send/${MessageId}`);
   }
 
   async ReportPack(PackId: string) {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/send/pack/${PackId}`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    return this.request("GET", `/v1/send/pack/${PackId}`);
   }
 
   async ReportToday(pageSize: number = 10, pageNumber: number = 1) {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/send/live/`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        pageSize,
-        pageNumber,
-      },
+    return this.request("GET", "/v1/send/live/", {
+      pageSize,
+      pageNumber,
     });
   }
 
@@ -127,53 +94,26 @@ export class Smsir {
     fromDate: number | null = null,
     toDate: number | null = null,
     pageSize: number = 10,
-    pageNumber: number = 1,
+    pageNumber: number = 1
   ) {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/send/archive/`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        fromDate,
-        toDate,
-        pageSize,
-        pageNumber,
-      },
+    return this.request("GET", "/v1/send/archive/", {
+      fromDate,
+      toDate,
+      pageSize,
+      pageNumber,
     });
   }
 
   async ReportLatestReceived(count: number = 100) {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/receive/latest`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        count,
-      },
+    return this.request("GET", "/v1/receive/latest", {
+      count,
     });
   }
 
   async ReportTodayReceived(pageSize: number = 10, pageNumber: number = 1) {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/receive/live`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        pageSize,
-        pageNumber,
-      },
+    return this.request("GET", "/v1/receive/live", {
+      pageSize,
+      pageNumber,
     });
   }
 
@@ -181,46 +121,21 @@ export class Smsir {
     fromDate: number | null = null,
     toDate: number | null = null,
     pageSize: number = 10,
-    pageNumber: number = 1,
+    pageNumber: number = 1
   ) {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/receive/archive`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        fromDate,
-        toDate,
-        pageSize,
-        pageNumber,
-      },
+    return this.request("GET", "/v1/receive/archive", {
+      fromDate,
+      toDate,
+      pageSize,
+      pageNumber,
     });
   }
 
   async getCredit() {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/credit`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    return this.request("GET", "/v1/credit");
   }
 
   async getLineNumbers() {
-    return axios({
-      method: 'GET',
-      url: `${ENDPOINT}/v1/line`,
-      headers: {
-        'X-API-KEY': SMSIR_API_KEY,
-        ACCEPT: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    return this.request("GET", "/v1/line");
   }
 }
