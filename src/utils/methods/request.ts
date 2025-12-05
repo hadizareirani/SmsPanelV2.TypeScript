@@ -1,8 +1,11 @@
 import { ENDPOINT } from "./constant";
 import { ApiKey, ResponseModel } from "../models";
 
-type RequestMethod = "GET" | "POST" | "PUT" | "DELETE";
-
+type RequestProps = {
+  apiKey: ApiKey;
+  input: string | URL | Request;
+  init?: RequestInit;
+};
 /**
  * Makes an HTTP request to the SMS.ir API
  *
@@ -27,21 +30,17 @@ type RequestMethod = "GET" | "POST" | "PUT" | "DELETE";
  * );
  * ```
  */
-export async function request<TBody, TResult>(
-  method: RequestMethod,
-  url: string,
-  apiKey: ApiKey,
-  body?: TBody
-
+export async function request<TResult>(
+  props: RequestProps
 ): Promise<ResponseModel<TResult>> {
-  const response = await fetch(`${ENDPOINT}${url}`, {
-    method,
+  const response = await fetch(`${ENDPOINT}${props.input}`, {
+    ...props.init,
     headers: {
-      "X-API-KEY": apiKey,
+      "X-API-KEY": props.apiKey,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    ...(body && { body: JSON.stringify(body) }),
+    ...(props.init?.body && { body: JSON.stringify(props.init.body) }),
   });
 
   if (!response.ok) {

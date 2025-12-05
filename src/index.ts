@@ -112,12 +112,12 @@ export default function smsBuilder(configs: SmsConfig) {
   };
 }
 
-const t = smsBuilder({
-  apiKey: "your_api_key",
-  lineNumber: 30001234567890,
-});
+// const t = smsBuilder({
+//   apiKey: "your_api_key",
+//   lineNumber: 30001234567890,
+// });
 
-t.reportMessage("876240022");
+// t.reportMessage("876240022");
 
 //   async ReportPack(PackId: string) {
 //     return this.request("GET", `/v1/send/pack/${PackId}`);

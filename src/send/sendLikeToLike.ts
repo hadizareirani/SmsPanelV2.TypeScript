@@ -29,17 +29,19 @@ export const createSendLikeToLike = ({ apiKey, lineNumber }: SmsConfig) => {
     sendDateTime?: number,
     customLineNumber?: number
   ): Promise<ResponseModel<SendLikeToLikeResponse>> {
-    return request<SendLikeToLikeBody, SendLikeToLikeResponse>(
-      "POST",
-      "/v1/send/liketolike",
+    return request<SendLikeToLikeResponse>({
+      input: "/v1/send/liketolike",
+      init: {
+        method: "POST",
+        body: JSON.stringify({
+          lineNumber: customLineNumber ?? lineNumber,
+          messageTexts,
+          mobiles,
+          ...(sendDateTime && { sendDateTime }),
+        } as SendLikeToLikeBody),
+      },
       apiKey,
-      {
-        lineNumber: customLineNumber ?? lineNumber,
-        messageTexts,
-        mobiles,
-        ...(sendDateTime && { sendDateTime }),
-      }
-    );
+    });
   };
 };
 

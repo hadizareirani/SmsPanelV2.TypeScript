@@ -26,16 +26,18 @@ export const createSendVerifyCode = ({ apiKey }: Pick<SmsConfig, "apiKey">) => {
     templateId: number,
     parameters: Array<Parameters>
   ): Promise<ResponseModel<SendVerifyCodeResponse>> {
-    return request<SendVerifyCodeBody, SendVerifyCodeResponse>(
-      "POST",
-      "/v1/send/verify/",
+    return request<SendVerifyCodeResponse>({
+      input: "/v1/send/verify/",
+      init: {
+        method: "POST",
+        body: JSON.stringify({
+          mobile,
+          templateId,
+          parameters,
+        } as SendVerifyCodeBody),
+      },
       apiKey,
-      {
-        mobile,
-        templateId,
-        parameters,
-      }
-    );
+    });
   };
 };
 

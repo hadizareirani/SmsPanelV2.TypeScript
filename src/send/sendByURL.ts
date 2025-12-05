@@ -1,17 +1,6 @@
 import { request, ResponseModel, SmsConfig } from "../utils";
 
 /**
- * Request parameters for sending SMS via URL (legacy method)
- */
-export interface SendByURLBody {
-  username: string;
-  mobile: string;
-  text: number;
-  password?: string;
-  Line?: number;
-}
-
-/**
  * Response from the send by URL API
  */
 export interface SendByURLResponse {
@@ -37,11 +26,13 @@ export const createSendByURL = ({ apiKey, lineNumber }: SmsConfig) => {
       text,
     });
 
-    return request<SendByURLBody, SendByURLResponse>(
-      "GET",
-      `/v1/send?${params.toString()}`,
-      apiKey
-    );
+    return request<SendByURLResponse>({
+      input: `/v1/send?${params.toString()}`,
+      init: {
+        method: "GET",
+      },
+      apiKey,
+    });
   };
 };
 

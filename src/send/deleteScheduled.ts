@@ -1,13 +1,6 @@
 import { PackId, request, SmsConfig } from "../utils";
 
 /**
- * Request body for deleting a scheduled SMS pack
- */
-export interface DeleteScheduledBody {
-  packId: PackId;
-}
-
-/**
  * Response from the delete scheduled SMS API
  */
 export interface DeleteScheduledResponse {
@@ -21,12 +14,14 @@ export interface DeleteScheduledResponse {
 export const createDeleteScheduled = ({
   apiKey,
 }: Pick<SmsConfig, "apiKey">) => {
-  return async function deleteScheduled(packId: DeleteScheduledBody) {
-    return request<DeleteScheduledBody, DeleteScheduledResponse>(
-      "DELETE",
-      `/v1/send/scheduled/${packId.packId}`,
-      apiKey
-    );
+  return async function deleteScheduled(packId: PackId) {
+    return request<DeleteScheduledResponse>({
+      input: `/v1/send/scheduled/${packId}`,
+      init: {
+        method: "DELETE",
+      },
+      apiKey,
+    });
   };
 };
 

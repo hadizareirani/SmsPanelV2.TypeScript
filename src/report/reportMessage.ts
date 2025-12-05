@@ -1,13 +1,6 @@
 import { request, ResponseModel, SmsConfig } from "../utils";
 
 /**
- * Request body for getting message report
- */
-export interface ReportMessageBody {
-  messageId: string;
-}
-
-/**
  * Response from the message report API
  */
 export interface ReportMessageResponse {
@@ -28,7 +21,13 @@ export const createReportMessage = ({ apiKey }: Pick<SmsConfig, "apiKey">) => {
   return async function reportMessage(
     messageId: string
   ): Promise<ResponseModel<ReportMessageResponse>> {
-    return request("GET", `/v1/send/${messageId}`, apiKey);
+    return request<ReportMessageResponse>({
+      input: `/v1/send/${messageId}`,
+      init: {
+        method: "GET",
+      },
+      apiKey,
+    });
   };
 };
 
