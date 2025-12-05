@@ -112,40 +112,6 @@ export default function smsBuilder(configs: SmsConfig) {
   };
 }
 
-// const t = smsBuilder({
-//   apiKey: "your_api_key",
-//   lineNumber: 30001234567890,
-// });
-
-// t.reportMessage("876240022");
-
-//   async ReportLatestReceived(count: number = 100) {
-//     return this.request("GET", "/v1/receive/latest", {
-//       count,
-//     });
-//   }
-
-//   async ReportTodayReceived(pageSize: number = 10, pageNumber: number = 1) {
-//     return this.request("GET", "/v1/receive/live", {
-//       pageSize,
-//       pageNumber,
-//     });
-//   }
-
-//   async ReportArchivedReceived(
-//     fromDate: number | null = null,
-//     toDate: number | null = null,
-//     pageSize: number = 10,
-//     pageNumber: number = 1
-//   ) {
-//     return this.request("GET", "/v1/receive/archive", {
-//       fromDate,
-//       toDate,
-//       pageSize,
-//       pageNumber,
-//     });
-//   }
-
 //   async getCredit() {
 //     return this.request("GET", "/v1/credit");
 //   }

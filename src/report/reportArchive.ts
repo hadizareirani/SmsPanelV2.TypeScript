@@ -1,4 +1,4 @@
-import { PackId, request, ResponseModel, SmsConfig } from "../utils";
+import { request, ResponseModel, SmsConfig } from "../utils";
 
 /**
  * Response from the send by URL API
