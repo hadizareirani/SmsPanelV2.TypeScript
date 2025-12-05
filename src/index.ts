@@ -1,4 +1,4 @@
-const ENDPOINT = "https://api.sms.ir";
+import { request } from "./utils/request";
 
 export class Smsir {
   private apiKey: string;
@@ -7,28 +7,6 @@ export class Smsir {
   constructor(apikey: string, linenumber: number) {
     this.apiKey = apikey;
     this.lineNumber = linenumber;
-  }
-
-  private async request<T>(
-    method: string,
-    url: string,
-    body?: any
-  ): Promise<T> {
-    const response = await fetch(`${ENDPOINT}${url}`, {
-      method,
-      headers: {
-        "X-API-KEY": this.apiKey,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json() as Promise<T>;
   }
 
   async SendBulk(
