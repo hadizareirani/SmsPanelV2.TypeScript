@@ -1,6 +1,7 @@
 import {
   createDeleteScheduled,
   createSendBulk,
+  createSendByURL,
   createSendLikeToLike,
   createSendVerifyCode,
 } from "./send";
@@ -12,20 +13,9 @@ export default function smsBuilder(configs: SmsConfig) {
     sendLikeToLike: createSendLikeToLike(configs),
     deleteScheduled: createDeleteScheduled({ apiKey: configs.apiKey }),
     sendVerifyCode: createSendVerifyCode({ apiKey: configs.apiKey }),
+    sendByURL: createSendByURL(configs),
   };
 }
-
-//   async SendVerifyCode(
-//     Mobile: string,
-//     TemplateId: number,
-//     Parameters: { name: string; value: string }[]
-//   ) {
-//     return this.request("POST", "/v1/send/verify/", {
-//       Mobile,
-//       TemplateId,
-//       Parameters,
-//     });
-//   }
 
 //   async ReportMessage(MessageId: number) {
 //     return this.request("GET", `/v1/send/${MessageId}`);

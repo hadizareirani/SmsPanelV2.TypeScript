@@ -32,6 +32,7 @@ export async function request<TBody, TResult>(
   url: string,
   apiKey: ApiKey,
   body?: TBody
+
 ): Promise<ResponseModel<TResult>> {
   const response = await fetch(`${ENDPOINT}${url}`, {
     method,
