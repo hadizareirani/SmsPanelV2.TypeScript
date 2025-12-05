@@ -119,10 +119,6 @@ export default function smsBuilder(configs: SmsConfig) {
 
 // t.reportMessage("876240022");
 
-//   async ReportPack(PackId: string) {
-//     return this.request("GET", `/v1/send/pack/${PackId}`);
-//   }
-
 //   async ReportToday(pageSize: number = 10, pageNumber: number = 1) {
 //     return this.request("GET", "/v1/send/live/", {
 //       pageSize,
