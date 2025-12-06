@@ -1,5 +1,5 @@
 import {describe, test, expect, beforeEach, vi, afterEach} from 'vitest'
-import { Smsir } from '../../../src/index';
+import { Smsir } from '../../src/index';
 import { ok } from 'assert';
 
 describe("Smsir Class - deleteScheduled Method",()=> {

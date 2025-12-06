@@ -1,5 +1,5 @@
 import {describe, test, expect, beforeEach, vi, afterEach} from 'vitest'
-import { Smsir } from '../../../src/index';
+import { Smsir } from '../../src/index';
 
 describe("Smsir Class - sendBulk Method",()=> {
     let smsir: Smsir;
