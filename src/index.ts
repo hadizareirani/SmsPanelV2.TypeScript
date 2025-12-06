@@ -563,5 +563,5 @@ export default smsBuilder;
 export * from "./send";
 export * from "./report";
 export * from "./settings";
-export * from "./utils";
+export * from "./utils/models";
 
