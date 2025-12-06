@@ -13,7 +13,7 @@ describe("Smsir Class",()=> {
     expect(smsir).toBeInstanceOf(Smsir);
    })
 
-   test("should have sendSms method",() => {
+   test("should have sendSms methods",() => {
     expect(typeof smsir.sendBulk).toBe('function');
     expect(typeof smsir.sendByURL).toBe('function');
     expect(typeof smsir.sendVerifyCode).toBe('function');
@@ -41,7 +41,7 @@ describe("smsBuilder Function",()=> {
         });
     })
 
-   test("should have sendSms method",() => {
+   test("should have sendSms methods",() => {
     expect(typeof smsDraftBuilder.sendBulk).toBe('function');
     expect(typeof smsDraftBuilder.sendByURL).toBe('function');
     expect(typeof smsDraftBuilder.sendVerifyCode).toBe('function');
