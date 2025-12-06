@@ -1,5 +1,4 @@
 import {describe, test, expect, beforeEach} from 'vitest'
-
 import { Smsir, smsBuilder } from '../../src/index';
 
 describe("Smsir Class",()=> {
