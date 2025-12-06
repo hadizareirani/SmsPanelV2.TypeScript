@@ -7,9 +7,14 @@
   "types": "./lib/types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js",
-      "types": "./lib/types/index.d.ts"
+      "import": {
+        "types": "./lib/types/index.d.ts",
+        "default": "./lib/esm/index.js"
+      },
+      "require": {
+        "types": "./lib/types/index.d.ts",
+        "default": "./lib/cjs/index.js"
+      }
     }
   },
   "scripts": {
@@ -30,7 +35,17 @@
     "type": "git",
     "url": "git+https://github.com/IPeCompany/SmsPanelV2.TypeScript.git"
   },
-  "keywords": [],
+  "keywords": [
+    "sms",
+    "sms.ir",
+    "typescript",
+    "sdk",
+    "api",
+    "iran",
+    "verification",
+    "otp",
+    "messaging"
+  ],
   "author": "hadi-zare-irani",
   "license": "ISC",
   "bugs": {
