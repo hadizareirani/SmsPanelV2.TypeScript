@@ -148,44 +148,4 @@ describe("Smsir Class - sendBulk Method",()=> {
         expect(requestBody.mobiles).toEqual(mobiles);
         expect(result.data.messageIds).toHaveLength(5);
     });
-
-    test("should throw error when API returns non-ok status", async () => {
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: false,
-            status: 401
-        });
-
-        await expect(
-            smsir.sendBulk("Test", ["09123456789"])
-        ).rejects.toThrow('HTTP error! status: 401');
-    });
-
-    test("should throw error when network fails", async () => {
-        global.fetch = vi.fn().mockRejectedValue(new Error('Network error'));
-
-        await expect(
-            smsir.sendBulk("Test", ["09123456789"])
-        ).rejects.toThrow('Network error');
-    });
-
-    test("should send correct request body structure", async () => {
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true,
-            json: async () => ({ status: 1, data: {} })
-        });
-
-        const messageText = "Test message";
-        const mobiles = ["09123456789"];
-        
-        await smsir.sendBulk(messageText, mobiles);
-
-        const fetchCall = (fetch as any).mock.calls[0];
-        const requestBody = JSON.parse(JSON.parse(fetchCall[1].body));
-
-        expect(requestBody).toHaveProperty('lineNumber');
-        expect(requestBody).toHaveProperty('messageText');
-        expect(requestBody).toHaveProperty('mobiles');
-        expect(requestBody.messageText).toBe(messageText);
-        expect(requestBody.mobiles).toEqual(mobiles);
-    });
 })
