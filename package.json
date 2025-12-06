@@ -27,6 +27,8 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:ui": "vitest --ui --config vitest.integration.config.ts",
     "prepare": "npm run build",
     "preversion": "npm run build",
     "version": "git add -A lib",
@@ -59,6 +61,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@vitest/ui": "^4.0.15",
+    "dotenv": "^17.2.3",
     "typescript": "^5.7.0",
     "vitest": "^4.0.15"
   },
