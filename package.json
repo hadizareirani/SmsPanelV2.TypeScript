@@ -23,6 +23,10 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:types": "tsc -p tsconfig.types.json",
     "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:types",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "prepare": "npm run build",
     "preversion": "npm run build",
     "version": "git add -A lib",
@@ -53,8 +57,10 @@
   },
   "homepage": "https://sms.ir/",
   "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@vitest/ui": "^4.0.15",
     "typescript": "^5.7.0",
-    "@types/node": "^22.0.0"
+    "vitest": "^4.0.15"
   },
   "files": [
     "lib/",
