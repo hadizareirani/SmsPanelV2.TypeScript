@@ -53,7 +53,7 @@ describe("Smsir Class - sendBulk Method",()=> {
         await getSmsir().sendBulk("Test", ["09123456789"], undefined, customLineNumber);
 
         const fetchCall = (fetch as any).mock.calls[0];
-        const requestBody = JSON.parse(JSON.parse(fetchCall[1].body));
+        const requestBody = JSON.parse(fetchCall[1].body);
         expect(requestBody.lineNumber).toBe(customLineNumber);
     });
 
@@ -63,7 +63,7 @@ describe("Smsir Class - sendBulk Method",()=> {
         await getSmsir().sendBulk("Test", ["09123456789"]);
 
         const fetchCall = (fetch as any).mock.calls[0];
-        const requestBody = JSON.parse(JSON.parse(fetchCall[1].body));
+        const requestBody = JSON.parse(fetchCall[1].body);
         expect(requestBody.lineNumber).toBe(30007732000000);
     });
 
@@ -74,7 +74,7 @@ describe("Smsir Class - sendBulk Method",()=> {
         await getSmsir().sendBulk("Scheduled message", ["09123456789"], scheduledTime);
 
         const fetchCall = (fetch as any).mock.calls[0];
-        const requestBody = JSON.parse(JSON.parse(fetchCall[1].body));
+        const requestBody = JSON.parse(fetchCall[1].body);
         expect(requestBody.sendDateTime).toBe(scheduledTime);
     });
 
@@ -84,7 +84,7 @@ describe("Smsir Class - sendBulk Method",()=> {
         await getSmsir().sendBulk("Immediate message", ["09123456789"]);
 
         const fetchCall = (fetch as any).mock.calls[0];
-        const requestBody = JSON.parse(JSON.parse(fetchCall[1].body));
+        const requestBody = JSON.parse(fetchCall[1].body);
         expect(requestBody.sendDateTime).toBeUndefined();
     });
 
@@ -106,7 +106,7 @@ describe("Smsir Class - sendBulk Method",()=> {
         const result = await getSmsir().sendBulk("Bulk message", mobiles);
 
         const fetchCall = (fetch as any).mock.calls[0];
-        const requestBody = JSON.parse(JSON.parse(fetchCall[1].body));
+        const requestBody = JSON.parse(fetchCall[1].body);
         expect(requestBody.mobiles).toEqual(mobiles);
         expect(result.data.messageIds).toHaveLength(5);
     });
