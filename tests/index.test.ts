@@ -1,18 +1,16 @@
-import {describe, test, expect, beforeEach} from 'vitest'
+import {describe, test, expect} from 'vitest'
 import { Smsir, smsBuilder } from '../src/index';
+import { setupSmsirTest } from './setup/testUtils';
 
 describe("Smsir Class",()=> {
-    let smsir: Smsir;
-
-   beforeEach(()=> {
-    smsir = new Smsir('your-api-key', 30007732000000);
-   })
+    const { getSmsir } = setupSmsirTest();
 
    test("should create an instance of Smsir",() => {
-    expect(smsir).toBeInstanceOf(Smsir);
+    expect(getSmsir()).toBeInstanceOf(Smsir);
    })
 
    test("should have sendSms methods",() => {
+    const smsir = getSmsir();
     expect(typeof smsir.sendBulk).toBe('function');
     expect(typeof smsir.sendByURL).toBe('function');
     expect(typeof smsir.sendVerifyCode).toBe('function');
@@ -32,13 +30,10 @@ describe("Smsir Class",()=> {
 })
 
 describe("smsBuilder Function",()=> {
-    let smsDraftBuilder: any;
-    beforeEach(() => {
-        smsDraftBuilder = smsBuilder({
-           apiKey:'your-api-key',
-           lineNumber:30007732000000
-        });
-    })
+   const smsDraftBuilder = smsBuilder({
+      apiKey:'your-api-key',
+      lineNumber:30007732000000
+   });
 
    test("should have sendSms methods",() => {
     expect(typeof smsDraftBuilder.sendBulk).toBe('function');

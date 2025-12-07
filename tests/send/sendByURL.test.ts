@@ -1,46 +1,27 @@
-import {describe, test, expect, beforeEach, vi, afterEach} from 'vitest'
-import { Smsir } from '../../src/index';
+import {describe, test, expect} from 'vitest'
+import { setupSmsirTest, createMockResponse, mockFetchSuccess } from '../setup/testUtils';
 
 describe("Smsir Class - sendByURL Method",()=> {
-
-    let smsir: Smsir;
-    beforeEach(()=> {
-        smsir = new Smsir('test-api-key', 30007732000000);
-        vi.clearAllMocks();
-    });
-
-    afterEach(() => {
-        vi.restoreAllMocks();
-    });
+    const { getSmsir } = setupSmsirTest();
 
     test("should have sendByURL method",() => {
-        expect(typeof smsir.sendByURL).toBe('function');
+        expect(typeof getSmsir().sendByURL).toBe('function');
     });
 
     test("sendByURL method should return a Promise",() => {
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true,
-            json: async () => ({ status: 1, message: 'success' })
-        });
-        const result = smsir.sendByURL("testUsername",'09121234567', "Hello World");
+        mockFetchSuccess({ status: 1, message: 'success' });
+        const result = getSmsir().sendByURL("testUsername",'09121234567', "Hello World");
         expect(result).toBeInstanceOf(Promise);
     });  
     
     test("should send SMS by URL with correct parameters", async () => {
-        const mockResponse = {
-            status: 1,
-            message: "عملیات با موفقیت انجام شد",
-            data: {
-                messageId: 67890,
-                cost: 50
-            }
-        };
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true,
-            json: async () => mockResponse
+        const mockResponse = createMockResponse({
+            messageId: 67890,
+            cost: 50
         });
+        mockFetchSuccess(mockResponse);
 
-        const result = await smsir.sendByURL("testUsername",'09121234567', "Hello World");
+        const result = await getSmsir().sendByURL("testUsername",'09121234567', "Hello World");
         expect(result).toEqual(mockResponse);
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledWith(
@@ -55,21 +36,13 @@ describe("Smsir Class - sendByURL Method",()=> {
     })
 
     test("should send SMS by URL with custom line", async()=> {
-        const mockResponse = {
-            status: 1,
-            message: "عملیات با موفقیت انجام شد",
-            data: {
-                messageId: 54321,
-                cost: 70
-            }
-        }
+        const mockResponse = createMockResponse({
+            messageId: 54321,
+            cost: 70
+        });
+        mockFetchSuccess(mockResponse);
 
-        global.fetch = vi.fn().mockResolvedValue({
-            ok: true,
-            json: async()=> mockResponse
-        })
-
-        const result = await smsir.sendByURL("testUsername",'09121234567', "Hello World", 30001234567890);
+        const result = await getSmsir().sendByURL("testUsername",'09121234567', "Hello World", 30001234567890);
         expect(fetch).toHaveBeenCalledWith(
             expect.stringContaining('30001234567890'),
             expect.objectContaining({
