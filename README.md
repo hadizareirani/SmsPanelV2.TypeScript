@@ -53,8 +53,11 @@ const sms = smsBuilder({
   lineNumber: 30007732000000,
 });
 
+// Same methods as class-based API
 const result = await sms.sendBulk("Hello!", ["09123456789"]);
 ```
+
+**Note:** The functional API does not include deprecated v1.x methods.
 
 ### CommonJS (Node.js)
 
@@ -115,6 +118,14 @@ Delete a scheduled SMS pack.
 await sms.deleteScheduled("pack-id-here");
 ```
 
+#### `sendByURL(username, mobile, text, customLine?)`
+
+Legacy URL-based sending method (for backward compatibility).
+
+```typescript
+await sms.sendByURL("username", "09123456789", "Hello World!");
+```
+
 ### Report Methods
 
 #### `reportMessage(messageId)`
@@ -132,6 +143,14 @@ Get all messages in a specific pack.
 
 ```typescript
 const pack = await sms.reportPackById("pack-id");
+```
+
+#### `reportDailyPack(pageNumber, pageSize)`
+
+Get daily pack statistics with pagination.
+
+```typescript
+const dailyPack = await sms.reportDailyPack(1, 10);
 ```
 
 #### `reportTodayLive(pageNumber, pageSize)`
@@ -204,6 +223,50 @@ const lines = await sms.getLineNumbers();
 console.log("Lines:", lines.data);
 ```
 
+## Backward Compatibility (v1.x Deprecated Methods)
+
+For users migrating from v1.x, all old method names are still supported via the class-based API:
+
+### Deprecated Methods (Class-based API Only)
+
+These methods are **deprecated** but still functional for backward compatibility. Use the new camelCase methods instead.
+
+```typescript
+// ⚠️ Deprecated - Use sendBulk() instead
+await sms.SendBulk("message", ["09123456789"]);
+
+// ⚠️ Deprecated - Use sendLikeToLike() instead
+await sms.SendLikeToLike(["msg1", "msg2"], ["09121111111", "09122222222"]);
+
+// ⚠️ Deprecated - Use sendVerifyCode() instead
+await sms.SendVerifyCode("09123456789", 12345, [
+  { name: "Code", value: "123456" },
+]);
+
+// ⚠️ Deprecated - Use reportMessage() instead
+await sms.ReportMessage(876240022);
+
+// ⚠️ Deprecated - Use reportPackById() instead
+await sms.ReportPack("pack-id");
+
+// ⚠️ Deprecated - Use reportTodayLive() instead
+await sms.ReportToday(1, 10);
+
+// ⚠️ Deprecated - Use reportArchive() instead
+await sms.ReportArchived(fromDate, toDate, 1, 10);
+
+// ⚠️ Deprecated - Use reportLatestReceive() instead
+await sms.ReportLatestReceived(100);
+
+// ⚠️ Deprecated - Use reportReceiveLive() instead
+await sms.ReportTodayReceived(1, 10);
+
+// ⚠️ Deprecated - Use reportReceiveArchive() instead
+await sms.ReportArchivedReceived(fromDate, toDate, 1, 10);
+```
+
+**Note:** Deprecated methods are only available in the `Smsir` class, not in the functional `smsBuilder` API.
+
 ## Usage Examples
 
 For detailed examples including Angular, React, Vue.js, and various use cases, see [USAGE_EXAMPLES.md](USAGE_EXAMPLES.md).
@@ -239,16 +302,26 @@ console.log(result.data.cost); // number
 
 ## Migration from v1.x
 
-No code changes needed! The class-based API is fully backward compatible:
+The SDK is fully backward compatible! Your existing code will continue to work:
 
 ```javascript
-// Old code (v1.x) - Still works!
+// v1.x code - Still works!
 const { Smsir } = require("sms-typescript");
 const sms = new Smsir("api-key", lineNumber);
 
-// All methods work the same way
+// Old PascalCase methods still work (but are deprecated)
+sms.SendBulk("Hello", ["09123456789"]).then((result) => console.log(result));
+
+// New camelCase methods (recommended)
 sms.sendBulk("Hello", ["09123456789"]).then((result) => console.log(result));
 ```
+
+**Migration recommendations:**
+
+1. ✅ Update to new camelCase method names (e.g., `SendBulk` → `sendBulk`)
+2. ✅ Add TypeScript for better IDE support
+3. ✅ Consider using the functional `smsBuilder` API for cleaner code
+4. ⚠️ Old PascalCase methods will be removed in v3.0.0
 
 ## Requirements
 
