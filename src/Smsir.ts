@@ -111,7 +111,7 @@ export class Smsir {
    * @param messageId - The message ID to get report for
    * @returns Promise with message details
    */
-  reportMessage(messageId: string) {
+  reportMessage(messageId: number) {
     return createReportMessage({ apiKey: this.apiKey })(messageId);
   }
 
@@ -249,7 +249,7 @@ export class Smsir {
    * @deprecated Use reportMessage instead. Provided for backward compatibility with v1.x
    * @param MessageId - The message ID to get report for
    */
-  ReportMessage(MessageId: string) {
+  ReportMessage(MessageId: number) {
     return this.reportMessage(MessageId);
   }
 
