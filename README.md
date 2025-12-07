@@ -328,6 +328,16 @@ sms.sendBulk("Hello", ["09123456789"]).then((result) => console.log(result));
 - Node.js >= 18.0.0 (uses native `fetch` API)
 - TypeScript >= 4.5 (if using TypeScript)
 
+### Module System Support
+
+- **CommonJS (require)**: ✅ Fully supported - works out of the box in Node.js
+- **ES Modules (import)**: ⚠️ Requires a bundler (Webpack, Vite, Rollup, esbuild, etc.)
+  - Direct Node.js ESM usage is not currently supported due to missing `.js` extensions
+  - Works perfectly with any bundler or build tool
+  - If you need native Node.js ESM support, please open an issue
+
+**Recommendation:** Use CommonJS (require) for Node.js projects, or use a bundler for ESM projects.
+
 ## Framework Integration
 
 ### Angular
