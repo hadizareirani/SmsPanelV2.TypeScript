@@ -8,7 +8,7 @@ const API_KEY = process.env.SMSIR_API_KEY || '';
 const LINE_NUMBER = Number(process.env.SMSIR_LINE_NUMBER) || 0;
 const TEST_MOBILE = process.env.SMSIR_TEST_MOBILE || '';
 const TEMPLATE_ID = Number(process.env.SMSIR_TEMPLATE_ID) || 0;
-const PACK_ID = Number(process.env.SMSIR_PACK_ID) || 0;
+const PACK_ID = process.env.SMSIR_PACK_ID || '';
 const USERNAME = process.env.SMSIR_USERNAME || '';
 const MESSAGE_ID = Number(process.env.SMSIR_MESSAGEID) || 0;
 
@@ -37,218 +37,218 @@ async function runExamples() {
     }
 
     // Send Bulk SMS with Custom Line Number
-    // console.log('2️⃣  Send Bulk SMS with Custom Line Number');
-    // try {
-    //   // TODO: Replace with your custom line number if different
-    //   const customLineResult = await sms.sendBulk(
-    //     'پیام با خط سفارشی',
-    //     [TEST_MOBILE],
-    //     undefined,
-    //     LINE_NUMBER
-    //   );
-    //   console.log('✅ Success:', customLineResult.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('2️⃣  Send Bulk SMS with Custom Line Number');
+    try {
+      // TODO: Replace with your custom line number if different
+      const customLineResult = await sms.sendBulk(
+        'پیام با خط سفارشی',
+        [TEST_MOBILE],
+        undefined,
+        LINE_NUMBER
+      );
+      console.log('✅ Success:', customLineResult.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Send Scheduled SMS
-    // console.log('\n3️⃣  Send Scheduled SMS (1 hour from now)');
-    // try {
-    //   const scheduledTime = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
-    //   const scheduledResult = await sms.sendBulk(
-    //     'این پیام یک ساعت دیگر ارسال خواهد شد',
-    //     [TEST_MOBILE],
-    //     scheduledTime
-    //   );
-    //   console.log('✅ Success:', scheduledResult.data);
-    //   console.log(`   Scheduled Pack ID: ${scheduledResult.data.packId}\n`);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n3️⃣  Send Scheduled SMS (1 hour from now)');
+    try {
+      const scheduledTime = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+      const scheduledResult = await sms.sendBulk(
+        'این پیام یک ساعت دیگر ارسال خواهد شد',
+        [TEST_MOBILE],
+        scheduledTime
+      );
+      console.log('✅ Success:', scheduledResult.data);
+      console.log(`   Scheduled Pack ID: ${scheduledResult.data.packId}\n`);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Send Like to Like (Multiple messages to multiple recipients)
-    // console.log('4️⃣  Send Like to Like');
-    // try {
-    //   const likeToLikeResult = await sms.sendLikeToLike(
-    //     ['سلام کاربر اول', 'سلام کاربر دوم'],
-    //     [TEST_MOBILE, TEST_MOBILE] 
-    //   );
-    //   console.log('✅ Success:', likeToLikeResult.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('4️⃣  Send Like to Like');
+    try {
+      const likeToLikeResult = await sms.sendLikeToLike(
+        ['سلام کاربر اول', 'سلام کاربر دوم'],
+        [TEST_MOBILE, TEST_MOBILE] 
+      );
+      console.log('✅ Success:', likeToLikeResult.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Send Verify Code
-    // console.log('\n5️⃣  Send Verify Code');
-    // try {
-    //   const verifyResult = await sms.sendVerifyCode(
-    //     TEST_MOBILE,
-    //     TEMPLATE_ID, 
-    //     [
-    //       { name: 'CODE', value: '123456' },
-    //     ]
-    //   );
-    //   console.log('✅ Success:', verifyResult.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n5️⃣  Send Verify Code');
+    try {
+      const verifyResult = await sms.sendVerifyCode(
+        TEST_MOBILE,
+        TEMPLATE_ID, 
+        [
+          { name: 'CODE', value: '123456' },
+        ]
+      );
+      console.log('✅ Success:', verifyResult.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Send By URL (Legacy method)
-    // console.log('\n6️⃣  Send By URL');
-    // try {
-    //   // TODO: Replace 'username' with your actual SMS.ir panel username
-    //   const urlResult = await sms.sendByURL(
-    //     USERNAME,
-    //     TEST_MOBILE,
-    //     'پیام تست از طریق URL'
-    //   );
-    //   console.log('✅ Success:', urlResult.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n6️⃣  Send By URL');
+    try {
+      // TODO: Replace 'username' with your actual SMS.ir panel username
+      const urlResult = await sms.sendByURL(
+        USERNAME,
+        TEST_MOBILE,
+        'پیام تست از طریق URL'
+      );
+      console.log('✅ Success:', urlResult.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Delete Scheduled SMS
-    // console.log('\n7️⃣  Delete Scheduled SMS');
-    // try {
-    //   // TODO: Replace with actual pack ID from scheduled SMS
-    //   const deleteResult = await sms.deleteScheduled(PACK_ID);
-    //   console.log('✅ Success:', deleteResult.data);
-    //   console.log(`   Returned Credit: ${deleteResult.data.returnedCreditCount}`);
-    //   console.log(`   SMS Count: ${deleteResult.data.smsCount}\n`);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n7️⃣  Delete Scheduled SMS');
+    try {
+      // TODO: Replace with actual pack ID from scheduled SMS
+      const deleteResult = await sms.deleteScheduled(PACK_ID);
+      console.log('✅ Success:', deleteResult.data);
+      console.log(`   Returned Credit: ${deleteResult.data.returnedCreditCount}`);
+      console.log(`   SMS Count: ${deleteResult.data.smsCount}\n`);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // ============================================
     // REPORT METHODS
     // ============================================
     
-    // console.log('\n📊 REPORT METHODS');
-    // console.log('─────────────────────────────────\n');
+    console.log('\n📊 REPORT METHODS');
+    console.log('─────────────────────────────────\n');
 
     // Report Message Status
-    // console.log('8️⃣  Report Message Status');
-    // try {
-    //   // TODO: Replace with actual message ID from sent SMS
-    //   const messageReport = await sms.reportMessage(MESSAGE_ID);
-    //   console.log('✅ Success:', messageReport.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('8️⃣  Report Message Status');
+    try {
+      // TODO: Replace with actual message ID from sent SMS
+      const messageReport = await sms.reportMessage(MESSAGE_ID);
+      console.log('✅ Success:', messageReport.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Report Pack by ID
-    // console.log('\n9️⃣  Report Pack by ID');
-    // try {
-    //   // TODO: Replace with actual pack ID
-    //   const packId = 'pack-id-from-sent-sms';
-    //   const packReport = await sms.reportPackById(packId);
-    //   console.log('✅ Success:', packReport.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n9️⃣  Report Pack by ID');
+    try {
+      // TODO: Replace with actual pack ID
+      const packId = 'pack-id-from-sent-sms';
+      const packReport = await sms.reportPackById(packId);
+      console.log('✅ Success:', packReport.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Report Today Live Messages
-    // console.log('\n🔟 Report Today Live Messages');
-    // try {
-    //   const todayLive = await sms.reportTodayLive(1, 10); // page 1, 10 items
-    //   console.log('✅ Success:', todayLive.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n🔟 Report Today Live Messages');
+    try {
+      const todayLive = await sms.reportTodayLive(1, 10); // page 1, 10 items
+      console.log('✅ Success:', todayLive.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Report Daily Pack
-    // console.log('\n1️⃣1️⃣  Report Daily Pack');
-    // try {
-    //   const dailyPack = await sms.reportDailyPack(1, 10);
-    //   console.log('✅ Success:', dailyPack.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n1️⃣1️⃣  Report Daily Pack');
+    try {
+      const dailyPack = await sms.reportDailyPack(1, 10);
+      console.log('✅ Success:', dailyPack.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // 12. Report Archive Messages
-    // console.log('\n1️⃣2️⃣  Report Archive Messages');
-    // try {
-    //   const fromDate = Math.floor(Date.now() / 1000) - (7 * 24 * 60 * 60); // 7 days ago
-    //   const toDate = Math.floor(Date.now() / 1000);
-    //   const archive = await sms.reportArchive(fromDate, toDate, 1, 10);
-    //   console.log('✅ Success:', archive.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n1️⃣2️⃣  Report Archive Messages');
+    try {
+      const fromDate = Math.floor(Date.now() / 1000) - (7 * 24 * 60 * 60); // 7 days ago
+      const toDate = Math.floor(Date.now() / 1000);
+      const archive = await sms.reportArchive(fromDate, toDate, 1, 10);
+      console.log('✅ Success:', archive.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Report Latest Received Messages
-    // console.log('\n1️⃣3️⃣  Report Latest Received Messages');
-    // try {
-    //   const latestReceived = await sms.reportLatestReceive(10); // Get 10 latest
-    //   console.log('✅ Success:', latestReceived.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n1️⃣3️⃣  Report Latest Received Messages');
+    try {
+      const latestReceived = await sms.reportLatestReceive(10); // Get 10 latest
+      console.log('✅ Success:', latestReceived.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Report Receive Live
-    // console.log('\n1️⃣4️⃣  Report Receive Live');
-    // try {
-    //   const receiveLive = await sms.reportReceiveLive(1, 10, true); // Sorted by newest
-    //   console.log('✅ Success:', receiveLive.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n1️⃣4️⃣  Report Receive Live');
+    try {
+      const receiveLive = await sms.reportReceiveLive(1, 10, true); // Sorted by newest
+      console.log('✅ Success:', receiveLive.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Report Receive Archive
-    // console.log('\n1️⃣5️⃣  Report Receive Archive');
-    // try {
-    //   const fromDate = Math.floor(Date.now() / 1000) - (7 * 24 * 60 * 60);
-    //   const toDate = Math.floor(Date.now() / 1000);
-    //   const receiveArchive = await sms.reportReceiveArchive(fromDate, toDate, 1, 10);
-    //   console.log('✅ Success:', receiveArchive.data);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('\n1️⃣5️⃣  Report Receive Archive');
+    try {
+      const fromDate = Math.floor(Date.now() / 1000) - (7 * 24 * 60 * 60);
+      const toDate = Math.floor(Date.now() / 1000);
+      const receiveArchive = await sms.reportReceiveArchive(fromDate, toDate, 1, 10);
+      console.log('✅ Success:', receiveArchive.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // ============================================
     // SETTINGS METHODS
     // ============================================
     
-    // console.log('\n⚙️  SETTINGS METHODS');
-    // console.log('─────────────────────────────────\n');
+    console.log('\n⚙️  SETTINGS METHODS');
+    console.log('─────────────────────────────────\n');
 
     // Get Credit
-    // console.log('1️⃣6️⃣  Get Account Credit');
-    // try {
-    //   const credit = await sms.getCredit();
-    //   console.log('✅ Success:', credit.data);
-    //   console.log(`   Your Credit: ${credit.data}\n`);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('1️⃣6️⃣  Get Account Credit');
+    try {
+      const credit = await sms.getCredit();
+      console.log('✅ Success:', credit.data);
+      console.log(`   Your Credit: ${credit.data}\n`);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // Get Line Numbers
-    // console.log('1️⃣7️⃣  Get Line Numbers');
-    // try {
-    //   const lineNumbers = await sms.getLineNumbers();
-    //   console.log('✅ Success:', lineNumbers.data);
-    //   console.log(`   Available Lines: ${lineNumbers.data.length}\n`);
-    // } catch (error) {
-    //   console.error('❌ Error:', error);
-    // }
+    console.log('1️⃣7️⃣  Get Line Numbers');
+    try {
+      const lineNumbers = await sms.getLineNumbers();
+      console.log('✅ Success:', lineNumbers.data);
+      console.log(`   Available Lines: ${lineNumbers.data.length}\n`);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
     // ============================================
     // BACKWARD COMPATIBILITY (Deprecated Methods)
     // ============================================
     
-//     console.log('\n⚠️  DEPRECATED METHODS (v1.x compatibility)');
-//     console.log('─────────────────────────────────\n');
+    console.log('\n⚠️  DEPRECATED METHODS (v1.x compatibility)');
+    console.log('─────────────────────────────────\n');
 
-//     console.log('1️⃣8️⃣  SendBulk (Deprecated - use sendBulk instead)');
-//     try {
-//       const deprecatedResult = await sms.SendBulk(
-//         'تست متد قدیمی',
-//         [TEST_MOBILE]
-//       );
-//       console.log('✅ Still works for backward compatibility:', deprecatedResult.data);
-//     } catch (error) {
-//       console.error('❌ Error:', error);
-//     }
+    console.log('1️⃣8️⃣  SendBulk (Deprecated - use sendBulk instead)');
+    try {
+      const deprecatedResult = await sms.SendBulk(
+        'تست متد قدیمی',
+        [TEST_MOBILE]
+      );
+      console.log('✅ Still works for backward compatibility:', deprecatedResult.data);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
 
   } catch (error) {
     console.error('\n❌ Fatal Error:', error);

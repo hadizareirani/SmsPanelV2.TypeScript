@@ -8,8 +8,10 @@ const API_KEY = process.env.SMSIR_API_KEY || '';
 const LINE_NUMBER = Number(process.env.SMSIR_LINE_NUMBER) || 0;
 const TEST_MOBILE = process.env.SMSIR_TEST_MOBILE || '';
 const TEMPLATE_ID = Number(process.env.SMSIR_TEMPLATE_ID) || 0;
+const PACK_ID = process.env.SMSIR_PACK_ID || '';
+const USERNAME = process.env.SMSIR_USERNAME || '';
+const MESSAGE_ID = Number(process.env.SMSIR_MESSAGEID) || 0;
 
-// Create SMS builder instance
 const sms = smsBuilder({
   apiKey: API_KEY,
   lineNumber: LINE_NUMBER
@@ -19,14 +21,10 @@ async function runExamples() {
   console.log('🚀 SMS.ir Function-based API Examples\n');
 
   try {
-    // ============================================
-    // SEND METHODS
-    // ============================================
-    
     console.log('📤 SEND METHODS');
     console.log('─────────────────────────────────\n');
 
-    // 1. Send Bulk SMS
+    // Send Bulk SMS
     console.log('1️⃣  Send Bulk SMS');
     try {
       const bulkResult = await sms.sendBulk(
@@ -41,7 +39,7 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 2. Send Bulk SMS with Custom Line Number
+    // Send Bulk SMS with Custom Line Number
     console.log('2️⃣  Send Bulk SMS with Custom Line Number');
     try {
       // TODO: Replace with your custom line number if different
@@ -56,7 +54,7 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 3. Send Scheduled SMS
+    // Send Scheduled SMS
     console.log('\n3️⃣  Send Scheduled SMS (1 hour from now)');
     try {
       const scheduledTime = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
@@ -71,27 +69,26 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 4. Send Like to Like (Multiple messages to multiple recipients)
+    // Send Like to Like (Multiple messages to multiple recipients)
     console.log('4️⃣  Send Like to Like');
     try {
       const likeToLikeResult = await sms.sendLikeToLike(
         ['سلام کاربر اول', 'سلام کاربر دوم'],
-        [TEST_MOBILE, TEST_MOBILE] // TODO: Add different mobile numbers
+        [TEST_MOBILE, TEST_MOBILE] 
       );
       console.log('✅ Success:', likeToLikeResult.data);
     } catch (error) {
       console.error('❌ Error:', error);
     }
 
-    // 5. Send Verify Code
+    // Send Verify Code
     console.log('\n5️⃣  Send Verify Code');
     try {
       const verifyResult = await sms.sendVerifyCode(
         TEST_MOBILE,
-        TEMPLATE_ID, // TODO: Create a template in SMS.ir panel and use its ID
+        TEMPLATE_ID, 
         [
-          { name: 'Code', value: '123456' },
-          { name: 'Name', value: 'کاربر عزیز' }
+          { name: 'CODE', value: '123456' },
         ]
       );
       console.log('✅ Success:', verifyResult.data);
@@ -99,12 +96,12 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 6. Send By URL (Legacy method)
+    // Send By URL (Legacy method)
     console.log('\n6️⃣  Send By URL');
     try {
       // TODO: Replace 'username' with your actual SMS.ir panel username
       const urlResult = await sms.sendByURL(
-        'username',
+        USERNAME,
         TEST_MOBILE,
         'پیام تست از طریق URL'
       );
@@ -113,12 +110,11 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 7. Delete Scheduled SMS
+    // Delete Scheduled SMS
     console.log('\n7️⃣  Delete Scheduled SMS');
     try {
       // TODO: Replace with actual pack ID from scheduled SMS
-      const packIdToDelete = 'pack-id-from-scheduled-sms';
-      const deleteResult = await sms.deleteScheduled(packIdToDelete);
+      const deleteResult = await sms.deleteScheduled(PACK_ID);
       console.log('✅ Success:', deleteResult.data);
       console.log(`   Returned Credit: ${deleteResult.data.returnedCreditCount}`);
       console.log(`   SMS Count: ${deleteResult.data.smsCount}\n`);
@@ -133,18 +129,17 @@ async function runExamples() {
     console.log('\n📊 REPORT METHODS');
     console.log('─────────────────────────────────\n');
 
-    // 8. Report Message Status
+    // Report Message Status
     console.log('8️⃣  Report Message Status');
     try {
-      // TODO: Replace with actual message ID from sent SMS (numeric ID)
-      const messageId = 123456; // Example numeric message ID
-      const messageReport = await sms.reportMessage(messageId);
+      // TODO: Replace with actual message ID from sent SMS
+      const messageReport = await sms.reportMessage(MESSAGE_ID);
       console.log('✅ Success:', messageReport.data);
     } catch (error) {
       console.error('❌ Error:', error);
     }
 
-    // 9. Report Pack by ID
+    // Report Pack by ID
     console.log('\n9️⃣  Report Pack by ID');
     try {
       // TODO: Replace with actual pack ID
@@ -155,7 +150,7 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 10. Report Today Live Messages
+    // Report Today Live Messages
     console.log('\n🔟 Report Today Live Messages');
     try {
       const todayLive = await sms.reportTodayLive(1, 10); // page 1, 10 items
@@ -164,7 +159,7 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 11. Report Daily Pack
+    // Report Daily Pack
     console.log('\n1️⃣1️⃣  Report Daily Pack');
     try {
       const dailyPack = await sms.reportDailyPack(1, 10);
@@ -184,7 +179,7 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 13. Report Latest Received Messages
+    // Report Latest Received Messages
     console.log('\n1️⃣3️⃣  Report Latest Received Messages');
     try {
       const latestReceived = await sms.reportLatestReceive(10); // Get 10 latest
@@ -193,7 +188,7 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 14. Report Receive Live
+    // Report Receive Live
     console.log('\n1️⃣4️⃣  Report Receive Live');
     try {
       const receiveLive = await sms.reportReceiveLive(1, 10, true); // Sorted by newest
@@ -202,7 +197,7 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 15. Report Receive Archive
+    // Report Receive Archive
     console.log('\n1️⃣5️⃣  Report Receive Archive');
     try {
       const fromDate = Math.floor(Date.now() / 1000) - (7 * 24 * 60 * 60);
@@ -220,7 +215,7 @@ async function runExamples() {
     console.log('\n⚙️  SETTINGS METHODS');
     console.log('─────────────────────────────────\n');
 
-    // 16. Get Credit
+    // Get Credit
     console.log('1️⃣6️⃣  Get Account Credit');
     try {
       const credit = await sms.getCredit();
@@ -230,12 +225,29 @@ async function runExamples() {
       console.error('❌ Error:', error);
     }
 
-    // 17. Get Line Numbers
+    // Get Line Numbers
     console.log('1️⃣7️⃣  Get Line Numbers');
     try {
       const lineNumbers = await sms.getLineNumbers();
       console.log('✅ Success:', lineNumbers.data);
       console.log(`   Available Lines: ${lineNumbers.data.length}\n`);
+    } catch (error) {
+      console.error('❌ Error:', error);
+    }
+
+    // ============================================
+    // BACKWARD COMPATIBILITY (Deprecated Methods)
+    // ============================================
+    
+    console.log('\n⚠️  DEPRECATED METHODS (v1.x compatibility)');
+    console.log('─────────────────────────────────\n');
+
+    console.log('1️⃣8️⃣  SendBulk (Deprecated - only available in class-based API)');
+    try {
+      // Note: smsBuilder (functional API) doesn't expose deprecated methods
+      // They are only available in the Smsir class for backward compatibility
+      console.log('ℹ️  Deprecated methods are only available in class-based API (Smsir class)');
+      console.log('   Use class-based.ts to test deprecated methods\n');
     } catch (error) {
       console.error('❌ Error:', error);
     }

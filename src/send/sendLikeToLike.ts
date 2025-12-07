@@ -48,12 +48,12 @@ export const createSendLikeToLike = ({ apiKey, lineNumber }: SmsConfig) => {
       input: "/v1/send/liketolike",
       init: {
         method: "POST",
-        body: JSON.stringify({
+        body: {
           lineNumber: customLineNumber ?? lineNumber,
           messageTexts,
           mobiles,
           ...(sendDateTime && { sendDateTime }),
-        } as SendLikeToLikeBody),
+        } as SendLikeToLikeBody,
       },
       apiKey,
     });

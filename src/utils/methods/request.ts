@@ -4,32 +4,11 @@ import { ApiKey, ResponseModel } from "../models";
 type RequestProps = {
   apiKey: ApiKey;
   input: string | URL | Request;
-  init?: RequestInit;
+  init?: Omit<RequestInit, 'body'> & {
+    body?: any;
+  };
 };
-/**
- * Makes an HTTP request to the SMS.ir API
- *
- * @template TBody - The type of the request body
- * @template TResult - The type of the expected response data
- *
- * @param method - HTTP method (GET, POST, PUT, DELETE)
- * @param url - API endpoint path (will be appended to base URL)
- * @param apiKey - SMS.ir API key for authentication
- * @param body - Optional request body (will be JSON stringified)
- *
- * @returns Promise resolving to the parsed JSON response
- * @throws Error if the HTTP response is not ok (status >= 400)
- *
- * @example
- * ```typescript
- * const result = await request<SendBulkBody, ApiResponse>(
- *   "POST",
- *   "/v1/send/bulk",
- *   "your-api-key",
- *   { MessageText: "Hello", Mobiles: ["09123456789"] }
- * );
- * ```
- */
+
 export async function request<TResult>(
   props: RequestProps
 ): Promise<ResponseModel<TResult>> {
@@ -40,11 +19,25 @@ export async function request<TResult>(
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    ...(props.init?.body && { body: JSON.stringify(props.init.body) }),
+    ...(props.init?.body && { 
+      body: typeof props.init.body === 'string' 
+        ? props.init.body 
+        : JSON.stringify(props.init.body) 
+    }),
   });
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    let errorMessage = `HTTP error! status: ${response.status}`;
+    try {
+      const errorBody = await response.json();
+      if (errorBody.message) {
+        errorMessage += ` - ${errorBody.message}`;
+      }
+    } catch {
+      // If response body is not JSON, use the status text
+      errorMessage += ` - ${response.statusText}`;
+    }
+    throw new Error(errorMessage);
   }
 
   return response.json() as Promise<ResponseModel<TResult>>;

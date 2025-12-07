@@ -43,16 +43,19 @@ export const createSendBulk = ({ apiKey, lineNumber }: SmsConfig) => {
     sendDateTime?: number,
     customLineNumber?: number
   ): Promise<ResponseModel<SendBulkResponse>> {
+    
+    const body = {
+      lineNumber: customLineNumber ?? lineNumber,
+      messageText,
+      mobiles,
+      ...(sendDateTime && { sendDateTime }),
+    } as SendBulkBody;
+
     return request<SendBulkResponse>({
       input: `/v1/send/bulk`,
       init: {
         method: "POST",
-        body: JSON.stringify({
-          lineNumber: customLineNumber ?? lineNumber,
-          messageText,
-          mobiles,
-          ...(sendDateTime && { sendDateTime }),
-        } as SendBulkBody),
+        body,
       },
       apiKey,
     });

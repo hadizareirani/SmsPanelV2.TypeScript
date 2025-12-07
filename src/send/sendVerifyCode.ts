@@ -43,11 +43,11 @@ export const createSendVerifyCode = ({ apiKey }: Pick<SmsConfig, "apiKey">) => {
       input: "/v1/send/verify/",
       init: {
         method: "POST",
-        body: JSON.stringify({
+        body: {
           mobile,
           templateId,
           parameters,
-        } as SendVerifyCodeBody),
+        } as SendVerifyCodeBody,
       },
       apiKey,
     });
