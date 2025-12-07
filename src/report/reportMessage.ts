@@ -28,7 +28,7 @@ export const createReportMessage = ({ apiKey }: Pick<SmsConfig, "apiKey">) => {
    * @returns Promise with message details including delivery state, cost, and timestamps
    */
   return async function reportMessage(
-    messageId: string
+    messageId: number
   ): Promise<ResponseModel<ReportMessageResponse>> {
     return request<ReportMessageResponse>({
       input: `/v1/send/${messageId}`,
