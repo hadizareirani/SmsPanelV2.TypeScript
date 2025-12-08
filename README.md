@@ -410,10 +410,6 @@ try {
 }
 ```
 
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information about what has changed recently.
-
 ## Contributing
 
 We welcome contributions from the community! Whether you want to report a bug, suggest a feature, or submit code improvements, your help is appreciated.
