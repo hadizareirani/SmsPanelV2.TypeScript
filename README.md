@@ -414,6 +414,27 @@ try {
 
 Please see [CHANGELOG](CHANGELOG.md) for more information about what has changed recently.
 
+## Contributing
+
+We welcome contributions from the community! Whether you want to report a bug, suggest a feature, or submit code improvements, your help is appreciated.
+
+### How to Contribute
+
+- **Report Issues**: Found a bug or have a feature request? [Open an issue](https://github.com/hadizareirani/SmsPanelV2.TypeScript/issues) on GitHub
+- **Submit Pull Requests**: Have a fix or improvement? [Create a pull request](https://github.com/hadizareirani/SmsPanelV2.TypeScript/pulls)
+- **Improve Documentation**: Help us improve docs by suggesting edits or additions
+- **Share Feedback**: Let us know how we can make this SDK better
+
+### Guidelines
+
+1. **Fork the repository** and create your branch from `main`
+2. **Write clear commit messages** describing your changes
+3. **Add tests** for new functionality when applicable
+4. **Update documentation** if you're changing functionality
+5. **Follow the existing code style** (TypeScript, JSDoc comments, etc.)
+
+We review all contributions and will provide feedback. Thank you for helping make this SDK better!
+
 ## Credits
 
 - [IPE Company](https://github.com/IPeCompany)
